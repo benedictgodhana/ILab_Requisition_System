@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>About Us - Archer's Tours and Travel</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Font Poppins -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+		
+    <!-- Other Stylesheets -->
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.5.6/css/ionicons.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+      /* Global font style */
+      body, h1, h2, h3, h4, h5, h6, p, a, li {
+        font-family: 'Poppins', sans-serif;
+      }
+
+      /* Custom styles for transparent navbar */
+      .navbar {
+        background-color: rgba(0, 0, 0, 0.4); /* Transparent black background */
+        transition: background-color 0.3s ease;
+      }
+      .navbar-dark .navbar-nav .nav-link {
+        color: #fff; /* White text for navbar links */
+      }
+      .navbar-dark .navbar-brand {
+        color: #fff; /* White text for brand */
+      }
+      /* Change navbar background on scroll */
+      .navbar.scrolled {
+        background-color: rgba(0, 0, 0, 0.8); /* Darker on scroll */
+      }
+
+      /* About section styles */
+      .about-section {
+        padding: 100px 0 50px; /* Added top padding for space */
+      }
+
+      .about-img {
+        width: 100%;
+        border-radius: 10px;
+        transition: transform 0.3s ease-in-out; /* Shortened hover effect */
+      }
+
+      .about-img:hover {
+        transform: scale(1.05);
+      }
+
+      .about-text {
+        padding-left: 50px;
+      }
+
+      .about-text h2 {
+        font-weight: 600;
+        margin-bottom: 20px;
+      }
+
+      .about-text p {
+        font-size: 16px;
+        color: #777;
+      }
+
+      /* Team section */
+      .team-section {
+        background-color: #f8f9fa;
+        padding: 50px 0;
+      }
+
+      .team-member img {
+        width: 100%;
+        border-radius: 50%;
+        transition: transform 0.3s ease;
+      }
+
+      .team-member:hover img {
+        transform: scale(1.1);
+      }
+
+      .team-member h5 {
+        margin-top: 15px;
+      }
+
+      /* Animations */
+      .animate-fade-up {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.3s ease-out, transform 0.3s ease-out; /* Faster animation */
+      }
+
+      .animate-fade-up.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    </style>
+  </head>
+  <body>
+  
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <img src="images/logo_medium_3-removebg-preview.png" alt="Archer's Tours Logo" style="height: 50px;">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Destinations</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Tours</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    
+    <!-- About Section -->
+    <section class="about-section">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <img src="images/slider-4.jpg" alt="About Archer's Tours" class="about-img">
+          </div>
+          <div class="col-md-6 about-text">
+            <h2>Welcome to Archer's Tours and Travel</h2>
+            <p class="">At Archer's Tours and Travel, we provide unforgettable travel experiences that span across some of the most beautiful destinations in the world. Our mission is to make your dreams of exploration come true by offering personalized and meticulously planned tours.</p>
+            <p class="animate-fade-in">Since our founding, we have helped countless adventurers embark on journeys filled with excitement, culture, and natural beauty. Whether you're looking to explore the savannas of Africa or visit historic landmarks, our expert team ensures that every trip is tailored to meet your needs.</p>
+            <p class="animate-fade-in">Join us and discover the world with Archer's Tours and Travel.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+
+    <!-- JavaScript includes -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+      // Add scrolled class to navbar when user scrolls down
+      $(window).scroll(function() {
+        if ($(this).scrollTop() > 50) {
+          $('.navbar').addClass('scrolled');
+        } else {
+          $('.navbar').removeClass('scrolled');
+        }
+      });
+
+      // Trigger animations on scroll
+      $(window).on('scroll', function() {
+        $('.animate-fade-up').each(function() {
+          if ($(this).offset().top < $(window).scrollTop() + $(window).height() - 50) {
+            $(this).addClass('show');
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
