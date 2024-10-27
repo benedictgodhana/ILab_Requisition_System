@@ -103,23 +103,35 @@
             <div class="p-6 flex flex-col">
                 <ul class="space-y-4">
                     <li>
-                        <a href="/dashboard" class="sidebar-link flex items-center {{ request()->is('dashboard') ? 'sidebar-active' : '' }}">
+                        <a href="/superadmin/dashboard" class="sidebar-link flex items-center {{ request()->is('dashboard') ? 'sidebar-active' : '' }}">
                             <span class="fa fa-tachometer-alt mr-3"></span> Dashboard
                         </a>
                     </li>
                     <li>
                         <a href="/requisitions" class="sidebar-link flex items-center {{ request()->is('requisitions') ? 'sidebar-active' : '' }}">
-                            <span class="fa fa-receipt mr-3"></span> My Requisitions
+                            <span class="fa fa-receipt mr-3"></span> Requisitions
                         </a>
                     </li>
                     <li>
-                        <a href="/inventories" class="sidebar-link flex items-center {{ request()->is('inventories') ? 'sidebar-active' : '' }}">
+                        <a href="/inventories" class="sidebar-link flex items-center {{ request()->is('inventory') ? 'sidebar-active' : '' }}">
                             <span class="fa fa-box mr-3"></span> Inventory
                         </a>
                     </li>
                     <li>
-                        <a href="/suppliers" class="sidebar-link flex items-center {{ request()->is('suppliers') ? 'sidebar-active' : '' }}">
-                            <span class="fa fa-truck mr-3"></span> Suppliers
+                        <a href="/superadmin/departments" class="sidebar-link flex items-center {{ request()->is('suppliers') ? 'sidebar-active' : '' }}">
+                            <span class="fa fa-building mr-3"></span> Manage Departments
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/superadmin/users" class="sidebar-link flex items-center {{ request()->is('users') ? 'sidebar-active' : '' }}">
+                            <span class="fa fa-users mr-3"></span> User Management
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/settings" class="sidebar-link flex items-center {{ request()->is('settings') ? 'sidebar-active' : '' }}">
+                            <span class="fa fa-cogs mr-3"></span> Settings
                         </a>
                     </li>
                     <li>

@@ -15,7 +15,7 @@
             <img src="/images/LOGO_2.png" alt="Logo" class="w-42 h-32 md:w-60 md:h-60 object-contain">
         </div>
 
-        <form method="POST" action="{{ route('login') }}" onsubmit="showLoader()" class="space-y-6">
+        <form method="POST" action="{{ route('login.submit') }}" onsubmit="showLoader()" class="space-y-6">
             @csrf
             <div class="relative z-0 w-full group">
                 <input type="email" name="email" id="email"
