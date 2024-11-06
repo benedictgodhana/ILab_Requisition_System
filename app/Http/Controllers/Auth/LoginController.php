@@ -50,7 +50,7 @@ class LoginController extends Controller
             return redirect()->route('admin.dashboard');
         }
 
-        return redirect()->route('dashboard');
+        return redirect()->route('staff.dashboard');
     }
 
     /**

@@ -114,7 +114,7 @@
                     </li>
                     <li>
                         <a href="/admin/receipts" class="sidebar-link flex items-center {{ request()->is('inventory') ? 'sidebar-active' : '' }}">
-                            <span class="fa fa-box mr-3"></span> Stock Receipt
+                            <span class="fa fa-box mr-3"></span> Item Receipt
                         </a>
                     </li>
                     <li>
@@ -122,6 +122,13 @@
                             <span class="fa fa-truck mr-3"></span> Item Management
                         </a>
                     </li>
+
+                    <li>
+                        <a href="/admin/stock" class="sidebar-link flex items-center {{ request()->is('inventory') ? 'sidebar-active' : '' }}">
+                            <span class="fa fa-box mr-3"></span> Stock Management
+                        </a>
+                    </li>
+
 
                     <li>
                         <a href="/users" class="sidebar-link flex items-center {{ request()->is('users') ? 'sidebar-active' : '' }}">
@@ -135,7 +142,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/logout" class="sidebar-link flex items-center">
+                        <a href="route('logout')" class="sidebar-link flex items-center">
                             <span class="fa fa-sign-out-alt mr-3"></span> Logout
                         </a>
                     </li>

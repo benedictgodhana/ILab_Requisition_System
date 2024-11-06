@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Models\ItemQuantity;
 use App\Models\ItemReceipt;
 use Illuminate\Http\Request;
 
@@ -32,25 +33,32 @@ class AdminController extends Controller
 
     // Store a newly created item in storage
     public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'reorder_level' => 'required|integer|min:0',
-            'manufacturer_code' => 'nullable|string',
-        ]);
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'reorder_level' => 'required|integer|min:0',
+        'manufacturer_code' => 'nullable|string',
+    ]);
 
-        $item = Item::create([
-            'name' => $request->name,
-            'description' => $request->description,
-            'unique_code' => $this->generateUniqueCode(), // Generate unique code on create
-            'reorder_level' => $request->reorder_level,
-            'manufacturer_code' => $request->manufacturer_code,
-            'user_id' => auth()->id(), // Store the user who added the item
-        ]);
+    // Create the item
+    $item = Item::create([
+        'name' => $request->name,
+        'description' => $request->description,
+        'unique_code' => $this->generateUniqueCode(), // Generate unique code on create
+        'reorder_level' => $request->reorder_level,
+        'manufacturer_code' => $request->manufacturer_code,
+        'user_id' => auth()->id(), // Store the user who added the item
+    ]);
 
-        return redirect()->route('items.index')->with('success', 'Item created successfully.');
-    }
+    // Create the ItemQuantity entry with quantity set to 0
+    ItemQuantity::create([
+        'item_id' => $item->id, // Foreign key to the item
+        'quantity' => 0, // Default quantity
+    ]);
+
+    return redirect()->route('items.index')->with('success', 'Item created successfully.');
+}
 
 
     // Show a specific item

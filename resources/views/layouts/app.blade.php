@@ -38,6 +38,12 @@
             overflow-y: auto; /* Allow scrolling in the sidebar */
         }
 
+        /* Main content area */
+        .main-content {
+            height: calc(100vh - 0px); /* Full height minus the header */
+            overflow-y: auto; /* Enable scrolling */
+        }
+
         /* Elevated header */
         header {
             background: white;
@@ -103,12 +109,12 @@
             <div class="p-6 flex flex-col">
                 <ul class="space-y-4">
                     <li>
-                        <a href="/dashboard" class="sidebar-link flex items-center {{ request()->is('dashboard') ? 'sidebar-active' : '' }}">
+                        <a href="/staff/dashboard" class="sidebar-link flex items-center {{ request()->is('dashboard') ? 'sidebar-active' : '' }}">
                             <span class="fa fa-tachometer-alt mr-3"></span> Dashboard
                         </a>
                     </li>
                     <li>
-                        <a href="/requisitions" class="sidebar-link flex items-center {{ request()->is('requisitions') ? 'sidebar-active' : '' }}">
+                        <a href="/staff/requisitions" class="sidebar-link flex items-center {{ request()->is('requisitions') ? 'sidebar-active' : '' }}">
                             <span class="fa fa-receipt mr-3"></span> My Requisitions
                         </a>
                     </li>
@@ -150,7 +156,7 @@
             @endif
 
             <!-- Page Content -->
-            <main class="p-6">
+            <main class="main-content p-6">
                 {{ $slot }}
             </main>
         </div>

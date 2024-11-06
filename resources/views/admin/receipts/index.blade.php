@@ -18,6 +18,7 @@
                 <table class="min-w-full bg-white border border-gray-200" id="receiptsTable">
                     <thead>
                         <tr>
+                        <th class="py-2 px-4 border-b">Item Code</th>
                             <th class="py-2 px-4 border-b">Item Name</th>
                             <th class="py-2 px-4 border-b">Quantity</th>
                             <th class="py-2 px-4 border-b">Cost Per Item</th> <!-- New column for Cost Per Item -->
@@ -30,7 +31,8 @@
                     <tbody>
                         @foreach ($receipts as $receipt)
                         <tr class="text-center">
-                            <td class="py-2 px-4 border-b">{{ $receipt->item->name }}</td>
+                        <td class="py-2 px-4 border-b">{{ $receipt->item->unique_code }}</td>
+                            <td class="py-2 px-4 border-b">{{ isset($receipt->item) ? $receipt->item->name : 'N/A' }}</td>
                             <td class="py-2 px-4 border-b">{{ $receipt->quantity }}</td>
                             <td class="py-2 px-4 border-b">{{ number_format($receipt->cost_per_item, 2) }}</td> <!-- Display Cost Per Item -->
                             <td class="py-2 px-4 border-b">{{ number_format($receipt->total_cost, 2) }}</td> <!-- Display Total Cost -->

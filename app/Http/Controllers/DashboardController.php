@@ -6,17 +6,20 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index()
-    {
-        $users = User::all(); // Fetch all users
-        return view('dashboard', compact('users')); // Pass users to the view
-    }
+   
 
 
     public function superAdmin()
     {
         // Your logic for the SuperAdmin dashboard
         return view('superadmin.dashboard'); // Make sure you have this view created
+    }
+
+
+    public function staff()
+    {
+        // Your logic for the SuperAdmin dashboard
+        return view('staff.dashboard'); // Make sure you have this view created
     }
 
 

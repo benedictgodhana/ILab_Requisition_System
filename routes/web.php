@@ -16,8 +16,12 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReceiptController;
+use App\Http\Controllers\RequisitionController;
+use App\Http\Controllers\StockManagementController;
 use App\Http\Controllers\UserController;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 // Guest routes (unauthenticated users)
 Route::middleware(['guest'])->group(function () {
@@ -31,9 +35,8 @@ Route::middleware(['guest'])->group(function () {
 
 // Authenticated routes
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard'); // Redirect staff and general users here
-    })->name('dashboard');
+
+
 
     // Role-based routes
     Route::middleware('auth','role:SuperAdmin')->group(function () {
@@ -76,6 +79,17 @@ Route::middleware(['auth'])->group(function () {
             'destroy' => 'items.destroy',
         ]);
 
+        Route::resource('admin/stock', StockManagementController::class)
+         ->names([
+        'index' => 'stock.index',
+        'create' => 'stock.create',
+        'store' => 'stock.store',
+        'show' => 'stock.show',
+        'edit' => 'stock.edit',
+        'update' => 'stock.update',
+        'destroy' => 'stock.destroy',
+    ]);
+
 
         Route::resource('admin/receipts', ReceiptController::class)
         ->names([
@@ -87,6 +101,45 @@ Route::middleware(['auth'])->group(function () {
             'update' => 'receipts.update',
             'destroy' => 'receipts.destroy',
         ]);
+    });
+
+
+
+    Route::middleware(['auth', 'role:Staff'])->group(function () {
+
+        Route::get('/staff/dashboard', [DashboardController::class, 'staff'])->name('staff.dashboard');
+
+
+        Route::resource('staff/requisitions', RequisitionController::class)
+        ->names([
+            'index' => 'requisitions.index',
+            'create' => 'requisitions.create',
+            'store' => 'requisitions.store',
+            'show' => 'requisitions.show',
+            'edit' => 'requisitions.edit',
+            'update' => 'requisitions.update',
+            'destroy' => 'requisitions.destroy',
+        ]);
+
+        Route::post('/requisitions/store-order', [RequisitionController::class, 'storeOrder'])->name('requisitions.storeOrder');
+
+
+        Route::resource('orders', OrderController::class)
+        ->names([
+            'index' => 'orders.index',
+            'create' => 'orders.create',
+            'store' => 'orders.store',
+            'show' => 'orders.show',
+            'edit' => 'orders.edit',
+            'update' => 'orders.update',
+            'destroy' => 'orders.destroy',
+        ]);
+
+
+
+
+
+
     });
 
 

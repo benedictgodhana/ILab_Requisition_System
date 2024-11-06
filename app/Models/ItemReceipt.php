@@ -29,4 +29,16 @@ class ItemReceipt extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function requisitions()
+    {
+        return $this->belongsToMany(Requisition::class, 'item_requisition')
+                    ->withPivot('quantity')
+                    ->withTimestamps();
+    }
+
+    public function orders()
+    {
+        return $this->belongsToMany(OrderItem::class, 'order_item')->withPivot('quantity', 'cost');
+    }
 }
