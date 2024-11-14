@@ -93,36 +93,36 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-            // Validate the input data
-            $validatedData = $request->validate([
-                'name' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255|unique:users,email,' . $user->id, // Exclude current user's email from uniqueness check
-                'password' => 'nullable|string|min:8|confirmed', // Password is optional; confirm if provided
-                'role' => 'required|exists:roles,id', // Validate that the role exists
-                'department_id' => 'required|exists:departments,id', // Validate that the department exists
-            ]);
+        // Validate the input data
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id, // Exclude current user's email from uniqueness check
+            'password' => 'nullable|string|min:8|confirmed', // Password is optional; confirm if provided
+            'role' => 'required|exists:roles,name', // Validate that the role name exists
+            'department_id' => 'required|exists:departments,id', // Validate that the department exists
+        ]);
 
-            // Prepare the data for update
-            $updateData = [
-                'name' => $validatedData['name'],
-                'email' => $validatedData['email'],
-                'department_id' => $validatedData['department_id'], // Update department
-            ];
+        // Prepare the data for update
+        $updateData = [
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'department_id' => $validatedData['department_id'], // Update department
+        ];
 
-            // Only hash the password if it’s provided
-            if (!empty($validatedData['password'])) {
-                $updateData['password'] = bcrypt($validatedData['password']);
-            }
-
-            // Update the user
-            $user->update($updateData);
-
-            // Update the role using Spatie
-            $user->syncRoles([$validatedData['role']]); // Sync the new role
-
-            // Redirect with success message
-            return redirect()->route('users.index')->with('success', 'User updated successfully!');
+        // Only hash the password if it’s provided
+        if (!empty($validatedData['password'])) {
+            $updateData['password'] = bcrypt($validatedData['password']);
         }
+
+        // Update the user
+        $user->update($updateData);
+
+        // Update the role using Spatie (use the role name from the validated data)
+        $user->syncRoles([$validatedData['roles']]); // Sync the new role by name
+
+        // Redirect with success message
+        return redirect()->route('users.index')->with('success', 'User updated successfully!');
+    }
 
 
     /**

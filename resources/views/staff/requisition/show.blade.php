@@ -82,7 +82,7 @@
 
         <!-- Back Button -->
         <div class="mt-8">
-            <a href="{{ route('requisitions.index') }}"
+            <a href="{{ route('staff.dashboard') }}"
                class="px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md inline-block">
                 Back to List
             </a>

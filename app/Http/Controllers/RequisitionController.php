@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Mail\OrderCreated;
+use App\Mail\AdminOrderCreated;
+use App\Models\User;
 use App\Models\Item;
 use App\Models\ItemQuantity;
 use App\Models\ItemReceipt;
@@ -9,6 +11,7 @@ use App\Models\OrderHeader;
 use App\Models\OrderItem;
 use App\Models\Requisition; // Make sure to import the Requisition model
 use App\Models\Status;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,13 +19,18 @@ class RequisitionController extends Controller
 {
     public function index()
     {
-        // Get the authenticated user's requisitions with their order items
+        // Get the authenticated user's requisitions with their order items, paginated by 8 items per page
         $requisitions = OrderHeader::with('orderItems') // Eager load the order items
             ->where('user_id', Auth::id()) // Filter by the authenticated user's ID
-            ->get();
+            ->paginate(8); // Paginate by 8 items per page
 
         return view('staff.requisition.index', compact('requisitions'));
     }
+
+
+
+    
+
 
 
     public function create(Request $request)
@@ -47,22 +55,45 @@ class RequisitionController extends Controller
 
 
 
-    // Store a newly created requisition in storage
-    public function store(Request $request)
-    {
-        // Generate a unique order number
-        $orderNumber = 'ORD-' . now()->format('YmdHis') . '-' . rand(1000, 9999);
+public function store(Request $request)
+{
+    // Generate a unique order number
+    $orderNumber = 'ORD-' . now()->format('YmdHis') . '-' . rand(1000, 9999);
 
-        // Create the order header
-        OrderHeader::create([
-            'user_id' => Auth::id(),   // Store the authenticated user's ID
-            'status_id' => 1,          // Assuming '1' is the 'pending' status ID
-            'order_number' => $orderNumber,
+    // Create the order header
+    $order = OrderHeader::create([
+        'user_id' => Auth::id(),   // Store the authenticated user's ID
+        'status_id' => 1,          // Assuming '1' is the 'pending' status ID
+        'order_number' => $orderNumber,
+    ]);
+
+    // Decode the items JSON from the hidden input
+    $items = json_decode($request->input('items'), true);
+
+    // Loop through the items and create an entry in the OrderItem table
+    foreach ($items as $itemId => $itemData) {
+        OrderItem::create([
+            'order_id' => $order->id,  // Link this item to the order header
+            'item_id' => $itemId,      // Item ID
+            'quantity' => $itemData['quantity'],  // Item quantity
+            'cost' => $itemData['costPerItem'],   // Cost per item
+            'remarks' => $itemData['remarks'] ?? '', // Add remarks if provided (default to empty string)
         ]);
-
-        // Redirect with a success message
-        return redirect()->route('requisitions.index')->with('success', 'Order created successfully.');
     }
+
+    // Send email to the logged-in user who created the requisition
+    Mail::to(Auth::user()->email)->send(new OrderCreated($order));
+
+    // Send email to all admin users
+    $admins = User::role('Admin')->get(); // Assuming you have a role named 'Admin'
+    foreach ($admins as $admin) {
+        Mail::to($admin->email)->send(new AdminOrderCreated($order));
+    }
+
+    // Redirect with a success message
+    return redirect()->route('requisitions.index')->with('success', 'Order created successfully.');
+}
+
 
     public function edit($id)
     {

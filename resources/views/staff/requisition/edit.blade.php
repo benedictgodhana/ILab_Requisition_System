@@ -94,7 +94,7 @@
                 <button type="submit" class="px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md">
                     Update Requisition
                 </button>
-                <a href="{{ route('requisitions.index') }}" class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md">
+                <a href="{{ route('staff.dashboard') }}" class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md">
                     Back to List
                 </a>
             </div>

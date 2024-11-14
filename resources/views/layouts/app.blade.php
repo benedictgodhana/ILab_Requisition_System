@@ -19,10 +19,7 @@
 
     <style>
         /* Apply Poppins font */
-        body, a, button {
-            font-family: 'Poppins', sans-serif;
-        }
-
+       
         /* Vuetify-inspired styling */
         body {
             background-color: #f5f5f5;
@@ -113,21 +110,18 @@
                             <span class="fa fa-tachometer-alt mr-3"></span> Dashboard
                         </a>
                     </li>
+
                     <li>
-                        <a href="/staff/requisitions" class="sidebar-link flex items-center {{ request()->is('requisitions') ? 'sidebar-active' : '' }}">
-                            <span class="fa fa-receipt mr-3"></span> My Requisitions
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/inventories" class="sidebar-link flex items-center {{ request()->is('inventories') ? 'sidebar-active' : '' }}">
-                            <span class="fa fa-box mr-3"></span> Inventory
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/suppliers" class="sidebar-link flex items-center {{ request()->is('suppliers') ? 'sidebar-active' : '' }}">
-                            <span class="fa fa-truck mr-3"></span> Suppliers
-                        </a>
-                    </li>
+    <a href="/staff/profile" class="sidebar-link flex items-center {{ request()->is('profile') ? 'sidebar-active' : '' }}">
+        <span class="fa fa-user mr-3"></span> Profile
+    </a>
+</li>
+<li>
+    <a href="/staff/settings" class="sidebar-link flex items-center {{ request()->is('settings') ? 'sidebar-active' : '' }}">
+        <span class="fa fa-cog mr-3"></span> Settings
+    </a>
+</li>
+
                     <li>
                         <a href="/logout" class="sidebar-link flex items-center">
                             <span class="fa fa-sign-out-alt mr-3"></span> Logout

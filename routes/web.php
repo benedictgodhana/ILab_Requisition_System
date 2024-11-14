@@ -17,6 +17,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\RequisitionController;
 use App\Http\Controllers\StockManagementController;
@@ -68,6 +69,11 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['auth', 'role:Admin'])->group(function () {
         Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
+
+        Route::get('/requisitions/{id}', [AdminController::class, 'view'])->name('requisitions.view');
+Route::get('/requisitions/{id}/edit', [AdminController::class, 'edit']);
+Route::get('/admin/requisitions', [AdminController::class, 'requisitions']);
+
         Route::resource('admin/items', AdminController::class)
         ->names([
             'index' => 'items.index',
@@ -105,10 +111,14 @@ Route::middleware(['auth'])->group(function () {
 
 
 
+
     Route::middleware(['auth', 'role:Staff'])->group(function () {
+
+        Route::get('/staff/profile', [ProfileController::class, 'index'])->name('staff.profile');
 
         Route::get('/staff/dashboard', [DashboardController::class, 'staff'])->name('staff.dashboard');
 
+        Route::put('/password/update', [ProfileController::class, 'updatePassword'])->name('password.update');
 
         Route::resource('staff/requisitions', RequisitionController::class)
         ->names([

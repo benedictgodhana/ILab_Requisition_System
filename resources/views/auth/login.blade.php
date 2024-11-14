@@ -62,13 +62,6 @@
                 <div class="loader hidden ml-2 inline-block" id="loader"></div>
             </button>
 
-            <p class="text-center mt-6 text-sm md:text-lg text-gray-500">— Or Sign In With —</p>
-            <div class="mt-4 flex justify-center">
-                <a href="#"
-                   class="bg-red-600 text-white py-2 px-4 md:py-3 md:px-6 rounded-lg hover:bg-red-700 text-sm md:text-lg">
-                    <span class="fa fa-google mr-2"></span> Google
-                </a>
-            </div>
         </form>
     </div>
 

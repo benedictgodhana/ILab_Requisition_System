@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-layouts.admin-layout title="Admin Dashboard">
     <div class="p-">
         @if (session('success'))
             <div id="success-message" class="bg-green-500 text-white p-4 rounded mb-4">
@@ -61,7 +61,9 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order Number</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Items Count</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Requested by</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date Needed</th>
                             <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                         </tr>
@@ -76,9 +78,12 @@
                                 <td class="px-6 py-4">
                                     {{ $requisition->orderItems->count() }} item(s)
                                 </td>
+                                <td class="px-6 py-4">{{ $requisition->user->name }}</td>
+
                                 <td class="px-6 py-4">{{ $requisition->status->name }}</td>
+
                                 <td class="px-6 py-4">
-                                    {{ \Carbon\Carbon::parse($requisition->date_needed)->format('d M Y') }}
+                                    {{ \Carbon\Carbon::parse($requisition->created_at)->format('d M Y') }}
                                 </td>
                                 <td class="px-6 py-4 flex items-center space-x-2">
                                     <!-- View Button -->
@@ -193,4 +198,4 @@
             }, 3000);
         });
     </script>
-</x-app-layout>
+</x-layouts.admin-layout>

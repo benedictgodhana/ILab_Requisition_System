@@ -108,7 +108,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/requisitions" class="sidebar-link flex items-center {{ request()->is('requisitions') ? 'sidebar-active' : '' }}">
+                        <a href="/admin/requisitions" class="sidebar-link flex items-center {{ request()->is('requisitions') ? 'sidebar-active' : '' }}">
                             <span class="fa fa-receipt mr-3"></span> Requisitions
                         </a>
                     </li>
