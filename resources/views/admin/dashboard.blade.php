@@ -28,6 +28,8 @@
                 </div>
             </div>
 
+
+            
             <!-- Chart Section -->
 
             <!-- Most Requested Items -->
@@ -73,8 +75,8 @@
 
 
                     <td class="px-4 py-2">
-                        <a href="{{ route('requisitions.view', $requisition->id) }}" class="text-blue-500 hover:text-blue-700 mr-3">View</a>
-                        <a href="{{ route('requisitions.edit', $requisition->id) }}" class="text-yellow-500 hover:text-yellow-700">Edit</a>
+                        <a href="{{ route('requisition.view', $requisition->id) }}" class="text-blue-500 hover:text-blue-700 mr-3">View</a>
+                        <a href="{{ route('requisition.edit', $requisition->id) }}" class="text-yellow-500 hover:text-yellow-700">Edit</a>
                     </td>
 
                 </tr>

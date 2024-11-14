@@ -6,6 +6,15 @@
             </div>
         @endif
 
+
+        @if (session('error'))
+            <div id="success-message" class="bg-red-500 text-white p-4 rounded mb-4">
+                {{ session('error') }}
+            </div>
+        @endif
+
+
+
         <div class="bg-white shadow-md rounded-lg p-6">
             <h2 class="text-2xl font-semibold mb-4">My Requisitions</h2>
 
@@ -62,6 +71,7 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order Number</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Items Count</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Requested by</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Updated By</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
 
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date Needed</th>
@@ -80,6 +90,15 @@
                                 </td>
                                 <td class="px-6 py-4">{{ $requisition->user->name }}</td>
 
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+    @if($requisition->updated_by)
+        {{ $requisition->updatedBy->name }} <!-- Display the name of the user who updated -->
+    @else
+        Not Updated
+    @endif
+</td>
+
+
                                 <td class="px-6 py-4">{{ $requisition->status->name }}</td>
 
                                 <td class="px-6 py-4">
@@ -87,7 +106,7 @@
                                 </td>
                                 <td class="px-6 py-4 flex items-center space-x-2">
                                     <!-- View Button -->
-                                    <a href="{{ route('requisitions.show', $requisition->id) }}"
+                                    <a href="{{ route('requisition.view', $requisition->id) }}"
                                        class="px-4 py-2 bg-blue-500 text-white rounded-md inline-flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-1" fill="none"
                                              viewBox="0 0 24 24" stroke="currentColor">
@@ -98,7 +117,7 @@
                                     </a>
 
                                     <!-- Edit Button -->
-                                    <a href="{{ route('requisitions.edit', $requisition->id) }}"
+                                    <a href="{{ route('requisition.edit', $requisition->id) }}"
                                        class="px-4 py-2 bg-yellow-500 text-white rounded-md inline-flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-1" fill="none"
                                              viewBox="0 0 24 24" stroke="currentColor">

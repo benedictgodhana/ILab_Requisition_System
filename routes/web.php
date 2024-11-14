@@ -70,9 +70,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
 
-        Route::get('/requisitions/{id}', [AdminController::class, 'view'])->name('requisitions.view');
-Route::get('/requisitions/{id}/edit', [AdminController::class, 'edit']);
-Route::get('/admin/requisitions', [AdminController::class, 'requisitions']);
+        Route::get('/admin/requisitions/{id}', [AdminController::class, 'view'])->name('requisition.view');
+Route::get('/requisitions/{id}/edit', [AdminController::class, 'editrequisition'])->name('requisition.edit');
+Route::get('/admin/requisitions', [AdminController::class, 'requisitions'])->name('requisition.index');
+
+Route::put('/requisitions/{id}/update', [AdminController::class, 'updateRequisition'])->name('updaterequisitions');
 
         Route::resource('admin/items', AdminController::class)
         ->names([

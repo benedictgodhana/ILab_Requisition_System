@@ -130,11 +130,7 @@
                     </li>
 
 
-                    <li>
-                        <a href="/users" class="sidebar-link flex items-center {{ request()->is('users') ? 'sidebar-active' : '' }}">
-                            <span class="fa fa-users mr-3"></span> User Management
-                        </a>
-                    </li>
+                   
 
                     <li>
                         <a href="/settings" class="sidebar-link flex items-center {{ request()->is('settings') ? 'sidebar-active' : '' }}">

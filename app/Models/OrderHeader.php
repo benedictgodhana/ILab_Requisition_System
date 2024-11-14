@@ -38,4 +38,10 @@ class OrderHeader extends Model
     {
         return $this->hasMany(OrderItem::class, 'order_id'); // Adjust 'requisition_id' if needed
     }
+
+    public function updatedBy()
+{
+    return $this->belongsTo(User::class, 'updated_by');
+}
+
 }
