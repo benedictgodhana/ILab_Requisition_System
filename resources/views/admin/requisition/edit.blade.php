@@ -9,7 +9,7 @@
 @endif
 
 <div class="p-8  max-w-8xl mx-auto bg-white shadow-lg rounded-lg">
-        <h2 class="text-2xl font-semibold mb-6 text-blue-600">Edit Requisition</h2>
+        <h2 class="text-2xl font-semibold  text-blue-600">Edit Requisition</h2>
 
         <form action="{{ route('updaterequisitions', $requisition->id) }}" method="POST">
             @csrf
@@ -118,7 +118,7 @@
 
 
               <!-- Save Changes Button -->
-<div class="mt-6">
+<div class="">
     <button type="submit" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md">
         Save Changes
     </button>
