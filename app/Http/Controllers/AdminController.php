@@ -69,8 +69,7 @@ use Illuminate\Support\Facades\DB;
                 ->limit(5) // Limit to the 5 most recent requisitions
                 ->get();
 
-            // Get the most requested item for the current month across all users
-            $topRequestedCurrentMonth = OrderHeader::join('order_item', 'order_item.order_id', '=', 'order_headers.id')
+                $topRequestedCurrentMonth = OrderHeader::join('order_item', 'order_item.order_id', '=', 'order_headers.id')
                 ->select(DB::raw('MONTH(order_headers.created_at) as month'), 'order_item.item_id', DB::raw('count(*) as count'))
                 ->whereRaw('MONTH(order_headers.created_at) = ?', [now()->month])
                 ->groupBy('month', 'order_item.item_id')
@@ -85,9 +84,10 @@ use Illuminate\Support\Facades\DB;
                 ->orderByDesc('count')
                 ->first(); // Get only the top requested item for last month
 
-            // Get item names (assuming Item model exists and has a 'name' field)
-            $topRequestedCurrentItemName = Item::find($topRequestedCurrentMonth->item_id)->name ?? 'Unknown Item';
-            $topRequestedPreviousItemName = Item::find($topRequestedPreviousMonth->item_id)->name ?? 'Unknown Item';
+            // Get item names, ensuring no errors if the queries return null
+            $topRequestedCurrentItemName = $topRequestedCurrentMonth ? Item::find($topRequestedCurrentMonth->item_id)->name : 'Unknown Item';
+            $topRequestedPreviousItemName = $topRequestedPreviousMonth ? Item::find($topRequestedPreviousMonth->item_id)->name : 'Unknown Item';
+
 
             // Pass the data to the view
             return view('admin.dashboard', [
