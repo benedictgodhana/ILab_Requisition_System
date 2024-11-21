@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Setting; // Assuming you have a Setting model
 
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+
 class SettingController extends Controller
 {
     /**
@@ -44,5 +47,29 @@ class SettingController extends Controller
         }
 
         return redirect()->back()->with('success', 'Settings updated successfully.');
+    }
+
+
+
+    public function updatePassword(Request $request)
+    {
+        // Validate the input
+        $request->validate([
+            'old_password' => ['required'],
+            'new_password' => ['required', 'min:8', 'confirmed'],
+        ]);
+
+        // Check if the old password matches
+        if (!Hash::check($request->old_password, Auth::user()->password)) {
+            return back()->withErrors(['old_password' => 'The old password is incorrect.']);
+        }
+
+        // Update the user's password
+        Auth::user()->update([
+            'password' => Hash::make($request->new_password),
+        ]);
+
+        // Redirect back with success message
+        return back()->with('status', 'Password successfully updated.');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ItemsExport;
 use App\Mail\ItemQuantityAssignedMail;
 use App\Models\Item;
 use App\Models\ItemQuantity;
@@ -11,9 +12,12 @@ use App\Models\Status;
 use App\Mail\RequisitionUpdatedMail;
 use App\Mail\RestockNotificationMail;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
     class AdminController extends Controller
     {
@@ -109,24 +113,63 @@ use Illuminate\Support\Facades\DB;
         }
 
     // Show all items
-    public function index()
+    public function index(Request $request)
     {
-        $items = Item::all();
+        $query = Item::query();
+
+        // Apply search filter
+        if ($request->has('search') && !empty($request->search)) {
+            $query->where('name', 'like', '%' . $request->search . '%')
+                ->orWhere('unique_code', 'like', '%' . $request->search . '%')
+                ->orWhere('manufacturer_code', 'like', '%' . $request->search . '%');
+        }
+
+        // Apply filter by reorder level
+        if ($request->has('reorder_level') && !empty($request->reorder_level)) {
+            $query->where('reorder_level', '<=', $request->reorder_level);
+        }
+
+        // Paginate results
+        $items = $query->paginate(10);
+
         return view('admin.items.index', compact('items'));
     }
 
 
-    public function requisitions()
+    public function requisitions(Request $request)
     {
-        // Fetch requisitions with related order items and paginate, ordered by created_at descending
-        $requisitions = OrderHeader::with('orderItems') // Load related order items
-            ->orderBy('created_at', 'desc') // Order by created_at in descending order (most recent first)
-            ->paginate(8); // Paginate results, 8 requisitions per page
+        $search = $request->input('search');
+        $status = $request->input('status');
+        $dateFrom = $request->input('date_from');
+        $dateTo = $request->input('date_to');
 
-        // Pass the requisitions to the view
+        $query = OrderHeader::with(['orderItems', 'user', 'updatedBy', 'status']);
+
+        if ($search) {
+            $query->where('order_number', 'like', "%{$search}%")
+                  ->orWhereHas('user', function ($query) use ($search) {
+                      $query->where('name', 'like', "%{$search}%");
+                  });
+        }
+
+        if ($status) {
+            $query->whereHas('status', function ($query) use ($status) {
+                $query->where('name', $status);
+            });
+        }
+
+        if ($dateFrom) {
+            $query->whereDate('created_at', '>=', $dateFrom);
+        }
+
+        if ($dateTo) {
+            $query->whereDate('created_at', '<=', $dateTo);
+        }
+
+        $requisitions = $query->orderBy('created_at', 'desc')->paginate(6);
+
         return view('admin.requisition.index', compact('requisitions'));
     }
-
 
 
     public function view($id)
@@ -314,6 +357,63 @@ public function updateRequisition(Request $request, $id)
 
     // Redirect with a success message
     return redirect()->route('requisition.index')->with('success', 'Requisition updated and stock quantities adjusted successfully.');
+}
+
+public function export()
+{
+    $requisitions = OrderHeader::with(['orderItems', 'user', 'updatedBy', 'status'])->get();
+
+    // Implement the export logic here (e.g., generate CSV/Excel file)
+    return response()->json($requisitions); // Example response
+}
+
+
+public function exportItems(Request $request)
+{
+    $search = $request->input('search');
+    $reorderLevel = $request->input('reorder_level');
+
+    return Excel::download(new ItemsExport($search, $reorderLevel), 'items.xlsx');
+}
+
+public function exportPdf(Request $request)
+{
+    // Get the filters from the request
+    $search = $request->input('search');
+    $reorderLevel = $request->input('reorder_level');
+
+    // Build the query for items based on filters
+    $itemsQuery = Item::query();
+
+    // Apply search filter if provided
+    if ($search) {
+        $itemsQuery->where(function($query) use ($search) {
+            $query->where('name', 'like', '%' . $search . '%')
+                  ->orWhere('description', 'like', '%' . $search . '%')
+                  ->orWhere('unique_code', 'like', '%' . $search . '%')
+                  ->orWhere('manufacturer_code', 'like', '%' . $search . '%');
+        });
+    }
+
+    // Apply reorder level filter if provided
+    if ($reorderLevel) {
+        $itemsQuery->where('reorder_level', '<=', $reorderLevel);
+    }
+
+    // Get the filtered items
+    $items = $itemsQuery->get();
+
+    // Generate a unique code for the report
+    $unique_code = uniqid('ITEM-', true);
+
+    // Get the currently authenticated user (assuming you're using Laravel's authentication system)
+    $user_name = auth()->user()->name;
+
+    // Generate the PDF with the filtered items and other data
+    $pdf = FacadePdf::loadView('admin.items.pdf', compact('items', 'unique_code', 'user_name'));
+
+    // Return the PDF for download
+    return $pdf->download('items-report.pdf');
 }
 
 }

@@ -135,10 +135,13 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/logout" class="sidebar-link flex items-center">
-                            <span class="fa fa-sign-out-alt mr-3"></span> Logout
-                        </a>
-                    </li>
+    <form action="{{ route('logout') }}" method="POST" id="logout-form" class="hidden">
+        @csrf
+    </form>
+    <a href="javascript:void(0);" class="sidebar-link flex items-center" onclick="document.getElementById('logout-form').submit();">
+        <span class="fa fa-sign-out-alt mr-3"></span> Logout
+    </a>
+</li>
                 </ul>
 
                 <footer class="mt-8">

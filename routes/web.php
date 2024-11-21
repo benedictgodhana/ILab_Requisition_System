@@ -20,8 +20,10 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\RequisitionController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StockManagementController;
 use App\Http\Controllers\UserController;
+use PhpOffice\PhpSpreadsheet\Settings;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 // Guest routes (unauthenticated users)
@@ -73,9 +75,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/requisitions/{id}', [AdminController::class, 'view'])->name('requisition.view');
 Route::get('/requisitions/{id}/edit', [AdminController::class, 'editrequisition'])->name('requisition.edit');
 Route::get('/admin/requisitions', [AdminController::class, 'requisitions'])->name('requisition.index');
-
+Route::get('/requisitions/export', [RequisitionController::class, 'export'])->name('requisition.exportAll');
 Route::put('/requisitions/{id}/update', [AdminController::class, 'updateRequisition'])->name('updaterequisitions');
-
+Route::get('items/export', [AdminController::class, 'exportItems'])->name('items.export');
+Route::get('/items/export-pdf', [AdminController::class, 'exportPdf'])->name('items.exportPdf');
         Route::resource('admin/items', AdminController::class)
         ->names([
             'index' => 'items.index',
@@ -121,6 +124,12 @@ Route::put('/requisitions/{id}/update', [AdminController::class, 'updateRequisit
         Route::get('/staff/dashboard', [DashboardController::class, 'staff'])->name('staff.dashboard');
 
         Route::put('/password/update', [ProfileController::class, 'updatePassword'])->name('password.update');
+
+        Route::put('/password/update', [SettingController::class, 'updatePassword'])->name('password.update');
+Route::get('/requisitions/export', [RequisitionController::class, 'export'])->name('requisitions.export');
+Route::get('/requisitions/print', [RequisitionController::class, 'print'])->name('requisitions.print');
+
+
 
         Route::resource('staff/requisitions', RequisitionController::class)
         ->names([

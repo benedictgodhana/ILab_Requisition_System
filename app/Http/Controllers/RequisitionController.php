@@ -14,6 +14,11 @@ use App\Models\Status;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\RequisitionsExport;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Barryvdh\DomPDF\PDF as DomPDFPDF;
+use Dompdf\Dompdf;
 
 class RequisitionController extends Controller
 {
@@ -29,7 +34,7 @@ class RequisitionController extends Controller
 
 
 
-    
+
 
 
 
@@ -196,6 +201,21 @@ public function store(Request $request)
             ->findOrFail($id); // If not found, it returns a 404
 
         return view('staff.requisition.show', compact('requisition'));
+    }
+
+    public function export()
+    {
+        return Excel::download(new RequisitionsExport, 'requisitions.xlsx');
+    }
+
+
+    public function print()
+    {
+        $requisitions = OrderHeader::with('orderItems') // Eager load the order items
+        ->where('user_id', Auth::id()) // Filter by the authenticated user's ID
+        ->paginate(8); // Paginate by 8 items per page
+        $pdf = Pdf::loadView('staff.requisition.print', compact('requisitions')); // Load the view into the PDF
+        return $pdf->stream('requisitions.pdf'); // Stream the PDF in the browser
     }
 
 

@@ -6,17 +6,38 @@ use App\Models\Receipt; // Make sure to import your Receipt model
 use App\Models\Item; // Import the Item model if needed
 use App\Models\ItemQuantity;
 use App\Models\ItemReceipt;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ReceiptController extends Controller
 {
     // Display a listing of the receipts
-    public function index()
-    {
-        $receipts = ItemReceipt::with(['item', 'user'])->get(); // Eager load item and user relationships
-        return view('admin.receipts.index', compact('receipts'));
+    public function index(Request $request)
+{
+    $query = ItemReceipt::with(['item', 'user']);
+
+    if ($request->filled('search')) {
+        $query->whereHas('item', function ($q) use ($request) {
+            $q->where('name', 'like', '%' . $request->search . '%');
+        });
     }
+
+    if ($request->filled('user')) {
+        $query->where('user_id', $request->user);
+    }
+
+    if ($request->filled('date')) {
+        $query->whereDate('created_at', $request->date);
+    }
+
+    $receipts = $query->paginate(8);
+    $users = User::all();
+
+    return view('admin.receipts.index', compact('receipts', 'users'));
+}
+
+
 
     // Show the form for creating a new receipt
     public function create()

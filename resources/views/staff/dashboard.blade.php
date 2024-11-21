@@ -78,20 +78,20 @@
     Create New Order
 </button>
     <!-- Print Button -->
-    <button id="print-btn" class="px-4 py-2 bg-green-500 text-white rounded-md inline-flex items-center">
+    <a href="{{ route('requisitions.export') }}" class="px-4 py-2 bg-green-500 text-white rounded-md inline-flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+        Export to Excel
+    </a>
+
+    <!-- Print to PDF -->
+    <a href="{{ route('requisitions.print') }}" class="px-4 py-2 bg-red-500 text-white rounded-md inline-flex items-center">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 14H18M12 10v4m7-3h-4V5a2 2 0 00-2-2H7a2 2 0 00-2 2v11H3a2 2 0 00-2 2v2a2 2 0 002 2h16a2 2 0 002-2v-2a2 2 0 00-2-2z" />
         </svg>
         Print
-    </button>
-
-    <!-- Export Button -->
-    <button id="export-btn" class="px-4 py-2 bg-blue-500 text-white rounded-md inline-flex items-center">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-        </svg>
-        Export
-    </button>
+    </a>
 </div>
 
             </div>
